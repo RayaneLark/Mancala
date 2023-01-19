@@ -1,4 +1,3 @@
-
 import pygame
 from graphic import Drawer
 from play import Play
