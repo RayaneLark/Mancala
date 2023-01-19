@@ -19,6 +19,9 @@ class MancalaBoard:
         # Dictionnaire pour stocker la fosse suivante de chaque fosse
         self.next_pit = {'A': 'B', 'B': 'C', 'C': 'D', 'D': 'E', 'E': 'F', 'F': 1,
                      1: 'L', 'L': 'K', 'K': 'J', 'J': 'I', 'I': 'H', 'H': 'G', 'G': 2, 2: 'A'}
+        
+        self.play_twice = {'G': 1, 'H': 2, 'I': 3, 'J': 4, 'K': 5, 'L': 6}
+        
 
     def possibleMoves(self, player):
         # Si le joueur 1 joue, on retourne les indices des fosses du joueur 1 qui contiennent des seeds
@@ -30,7 +33,7 @@ class MancalaBoard:
             return [pit for pit in self.player_2_pits if self.board[pit] > 0]
 
     def doMove(self, player, pit):
-        # Récupération du nombre de seeds dans la fosse choisie
+        # Récupération du nombre de seeds dans la fosse choisie et vider la fosse
         seeds = self.board[pit]
         self.board[pit] = 0
         
