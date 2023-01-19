@@ -39,14 +39,14 @@ class Play:
                     pit = getPitFromPos(pos)
                     # Si la fosse est un coup valide, jouer le coup et définir le drapeau sur True
                     if pit in game.state.possibleMoves(1):
-                        curent_player = game.state.doMove(1, pit)
+                        current_player = game.state.doMove(1, pit)
                         move_made = True
                         break
             # Pause de la boucle de jeu pendant un court moment pour permettre au ordinateur de traiter les événements
             pygame.time.delay(50)
             
         # Retourner le joueur suivant
-        return curent_player
+        return current_player
 
 
     def computerTurn(self, game, play, depth = 8):
@@ -54,15 +54,22 @@ class Play:
         if len(game.state.possibleMoves(2)) > 0:
             # Trouver le meilleur coup à jouer grâce à l'algorithme Minimax avec élagage alpha-beta
             
-            player_1_four = all(game.state.board[x] == 4 for x in game.state.player_1_pits)
-            player_2_four = all(game.state.board[x] == 4 for x in game.state.player_2_pits)
+            #player_2_four = all(game.state.board[x] == 4 for x in game.state.player_2_pits)
             
-            if player_1_four and player_2_four:
-              curent_player = game.state.doMove(2, 'J')
+            # Vérifier si il y'a un coup qui permettera de jouer une deuxième fois
+            move = ''
+            for key in game.state.board.keys():
+                if key in game.state.play_twice.keys() and game.state.board[key] == game.state.play_twice[key]:
+                    move = key
+                    break;
+            
+            if move != '':
+              curent_player = game.state.doMove(2, move)
             
             else:  
-              best_node = play.minmaxAlphaBetaPruning( game, 2, depth, -math.inf, math.inf)
+              best_node = play.minmaxAlphaBetaPruning(game, 2, depth, -math.inf, math.inf)
               # Jouer le coup et récupérer l'identifiant du joueur suivant
+              #print(best_node[1])
               curent_player = game.state.doMove(2, best_node[1])
             
         # Retourner le joueur suivant et l'état du jeu    
@@ -73,7 +80,7 @@ class Play:
         # retourner la valeur d'évaluation du jeu et aucun mouvement (None)
         if depth == 0 or game.gameOver():
             return game.evaluate(), None
-
+            
         # Si c'est au tour du joueur 1 de jouer
         if player == 1:
             # Initialiser la meilleure valeur et le meilleur mouvement
@@ -137,3 +144,5 @@ class Play:
             
             # Retourner la meilleure valeur et le meilleur mouvement
             return best_value, best_move
+        
+        
