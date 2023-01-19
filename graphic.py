@@ -64,7 +64,7 @@ class Drawer:
     def __init__(self):
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         # Set the title of the window
-        pygame.display.set_caption("Mancala by Rayane")
+        pygame.display.set_caption("Mancala")
         self.board = dict()
         self.drawBoard()
         self.drawFosses()
